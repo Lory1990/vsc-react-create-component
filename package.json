@@ -20,7 +20,17 @@
 				"title": "Create React Component Folder",
 				"when": "explorerResourceIsFolder"
 			}
-		]
+		],
+		"menus": {
+			"explorer/context": [
+				{
+					"command": "vsc-react-create-component.createFolder",
+					"alt": "vsc-react-create-component.createFolder",
+					"title": "Create React Component Folder",
+					"group": "navigation"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "yarn run package",
@@ -50,6 +60,7 @@
 		"webpack-cli": "^4.4.0"
 	},
 	"dependencies": {
+		"@types/fs-extra": "^9.0.11",
 		"fs-extra": "^10.0.0"
 	}
 }
