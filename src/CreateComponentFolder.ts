@@ -1,24 +1,25 @@
 import { window } from 'vscode';
+import * as vscode from 'vscode';
+const path = require("path");
 
 export interface ICreateComponentFolderDTO {
     componentName:string,
-    path: string,
+    directoryPath: string,
 }
 
- export default async function CreateComponentFolder(data : ICreateComponentFolderDTO) {
-	// const result = await window.showInputBox({
-	// 	value: 'abcdef',
-	// 	valueSelection: [2, 4],
-	// 	placeHolder: 'MySuperCoolComponent',
-    //     title: "Component Name",
-	// 	validateInput: text => {
-    //         if(text.indexOf(' ') >= 0) return "No spaces allowed"
-    //         if(text.match(/^\d/)) return "Cannot start with number"
-    //         return null
-	// 		//window.showInformationMessage(`Validating: ${text}`);
-	// 		//return text === '123' ? 'Not 123!' : null;
-
-	// 	}
-	// });
-	// window.showInformationMessage(`Got: ${result}`);
+ export default async function createComponentFolder({componentName, directoryPath} : ICreateComponentFolderDTO) {
+	try{
+		let extensions = [".tsx", ".stories.tsx", ".js", ".formik.tsx"];
+		const directory = path.join(directoryPath, componentName);
+		// Ceating folder
+		debugger
+		await vscode.workspace.fs.createDirectory(vscode.Uri.file(directory))
+		// Ceating files
+		for(let  extension of extensions){
+			await vscode.workspace.fs.writeFile(vscode.Uri.file(directory + "\\" + componentName+extension), Buffer.from("", 'utf8'));
+		}
+	}catch(e){
+		console.error(e);
+		throw e;
+	}
 }
