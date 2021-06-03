@@ -1,6 +1,6 @@
 import { window } from 'vscode';
 
-export default  async function createComponentFolderView() : Promise<string | undefined> {
+export default  async function getComponentNameView() : Promise<string | undefined> {
 	const result = await window.showInputBox({
 		placeHolder: 'MySuperCoolComponent',
         title: "Component Name",
