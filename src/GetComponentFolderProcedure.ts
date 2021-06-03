@@ -39,9 +39,10 @@ export default  async function getComponentFolderProcedure(folderPathFromContext
 
 
     if(folderPathFromContextMenu){
-        if(!fs.existsSync(folderPathFromContextMenu)){
-            throw new Error("Directory does not exists")
-        }
+        // const exists = fs.existsSync((folderPathFromContextMenu as vscode.Uri).path)
+        // if(!exists){
+        //     throw new Error("Directory does not exists")
+        // }
 
         const directoryStatistics = await vscode.workspace.fs.stat(folderPathFromContextMenu);
         
@@ -52,6 +53,6 @@ export default  async function getComponentFolderProcedure(folderPathFromContext
             componentDirectory = vscode.Uri.file(parentDirectory);
         }
     }
-
+    
     return componentDirectory;
 }

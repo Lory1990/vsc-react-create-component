@@ -1,8 +1,8 @@
 {
 	"name": "vsc-react-create-component",
-	"displayName": "vsc-react-create-component",
+	"displayName": "React Create Component Strucure",
 	"description": "Creates folder and files for a react component",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.56.0"
 	},
@@ -14,6 +14,56 @@
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
+		"configuration": {
+			"title": "React Create Component",
+			"properties": {
+				"dialect": {
+					"type": "string",
+					"enum": [
+						"typescript",
+						"javascript",
+						"svelte"
+					],
+					"enumDescriptions": [
+						"Typescript",
+						"Javascript",
+						"Svelte"
+					],
+					"description": "Select dialect",
+					"default": "typescript"
+				},
+				"files.createMainFile": {
+					"type": "boolean",
+					"description": "Create Main file",
+					"default": true
+				},
+				"files.createStory": {
+					"type": "boolean",
+					"description": "Create Storybook Story file",
+					"default": true
+				},
+				"files.createFormik": {
+					"type": "boolean",
+					"description": "Create Formik file",
+					"default": true
+				},
+				"files.createSass": {
+					"type": "boolean",
+					"description": "Create SASS file",
+					"default": true
+				},
+				"files.createLess": {
+					"type": "boolean",
+					"description": "Create LESS file",
+					"default": true
+				},
+				"files.createCss": {
+					"type": "boolean",
+					"description": "Create CSS file",
+					"default": true
+				}
+			}
+		},
 		"commands": [
 			{
 				"command": "vsc-react-create-component.createFolder",
@@ -61,6 +111,7 @@
 	},
 	"dependencies": {
 		"@types/fs-extra": "^9.0.11",
+		"change-case": "^4.1.2",
 		"fs-extra": "^10.0.0",
 		"path": "^0.12.7"
 	}

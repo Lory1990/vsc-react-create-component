@@ -30,7 +30,7 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 			vscode.window.showInformationMessage(`Created ${componentName} component`);
 		}catch(e){
-			vscode.window.showErrorMessage(e)
+			vscode.window.showErrorMessage(e.message)
 		}
 	});
 
