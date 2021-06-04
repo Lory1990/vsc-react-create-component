@@ -43,9 +43,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-        
+
       - name: clean install dependencies
-        run: npm ci
+        run: yarn ci
 
       - name: update metadata in package.json
         uses: onlyutkarsh/patch-files-action@v1.0.1
@@ -53,8 +53,6 @@ jobs:
           files: '${{github.workspace}}/package.json'
           patch-syntax: |
             = /version => "${{ steps.gitversion.outputs.semVer }}"
-            = /displayName => "VSIX Viewer"
-            = /description => "A simple viewer for VSIX files, which lets you see the contents of VSIX files within Visual Studio Code."
       
       - name: add version in CHANGELOG.md
         uses: cschleiden/replace-tokens@v1.0
@@ -64,7 +62,7 @@ jobs:
           VERSION: "${{ steps.gitversion.outputs.semVer }}"
 
       - name: compile and create vsix
-        run: npm run package
+        run: yarn package
 
       - name: print vsix path
         run: |
