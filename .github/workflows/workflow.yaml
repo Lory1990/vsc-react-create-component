@@ -12,10 +12,6 @@ jobs:
     name: cicd
     runs-on: windows-latest
     steps:
-      - name: setEnvironment
-        run: |
-          echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV
-
       - name: checkout repo
         uses: actions/checkout@v2
 
@@ -24,6 +20,8 @@ jobs:
 
       - name: install gitversion tool
         uses: gittools/actions/gitversion/setup@v0.9
+        run: |
+          echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV
         with:
             versionSpec: '5.1.x'
       
