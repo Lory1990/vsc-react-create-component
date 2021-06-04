@@ -12,6 +12,10 @@ jobs:
     name: cicd
     runs-on: windows-latest
     steps:
+      - name: setEnvironment
+        run: |
+          echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV
+
       - name: checkout repo
         uses: actions/checkout@v2
 
