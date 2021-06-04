@@ -2,7 +2,7 @@
 	"name": "vsc-react-create-component",
 	"displayName": "React Create Component Strucure",
 	"description": "Creates folder and files for a react component",
-	"version": "0.0.2",
+	"version": "0.5.0",
 	"engines": {
 		"vscode": "^1.56.0"
 	},
