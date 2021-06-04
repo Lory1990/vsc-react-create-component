@@ -47,20 +47,35 @@
 					"description": "Create Formik file",
 					"default": true
 				},
-				"files.createSass": {
+				"styleFiles.createSass": {
 					"type": "boolean",
 					"description": "Create SASS file",
-					"default": true
+					"default": false
 				},
-				"files.createLess": {
+				"styleFiles.createSassModule": {
+					"type": "boolean",
+					"description": "Create SASS module file",
+					"default": false
+				},
+				"styleFiles.createLess": {
 					"type": "boolean",
 					"description": "Create LESS file",
-					"default": true
+					"default": false
 				},
-				"files.createCss": {
+				"styleFiles.createLessModule": {
+					"type": "boolean",
+					"description": "Create LESS module file",
+					"default": false
+				},
+				"styleFiles.createCss": {
 					"type": "boolean",
 					"description": "Create CSS file",
 					"default": true
+				},
+				"styleFiles.createCssModule": {
+					"type": "boolean",
+					"description": "Create CSS module file",
+					"default": false
 				}
 			}
 		},

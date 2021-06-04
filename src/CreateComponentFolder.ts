@@ -14,7 +14,8 @@ export interface ICreateComponentFolderDTO {
 		const configuration = vscode.workspace.getConfiguration()
 		
 		let filesToCreate = [];
-		if(configuration.get('files.createSass')){
+		let stylesImport = []
+		if(configuration.get('styleFiles.createSass')){
 			filesToCreate.push({
 				extension: ".scss",
 				content: `.${componentNameSnakeCase}{
@@ -22,10 +23,22 @@ export interface ICreateComponentFolderDTO {
 				}
 				`,
 			})
+			stylesImport.push(`import './${componentName}.scss'`)
+		}
+
+		if(configuration.get('styleFiles.createSassModule')){
+			filesToCreate.push({
+				extension: ".module.scss",
+				content: `.${componentNameSnakeCase}{
+
+				}
+				`,
+			})
+			stylesImport.push(`import style from './${componentName}.module.scss'`)
 		}
 
 		
-		if(configuration.get('files.createLess')){
+		if(configuration.get('styleFiles.createLess')){
 			filesToCreate.push({
 				extension: ".less",
 				content: `.${componentNameSnakeCase}{
@@ -33,9 +46,21 @@ export interface ICreateComponentFolderDTO {
 				}
 				`,
 			})
+			stylesImport.push(`import './${componentName}.less'`)
 		}
 
-		if(configuration.get('files.createCss')){
+		if(configuration.get('styleFiles.createLessModule')){
+			filesToCreate.push({
+				extension: ".module.less",
+				content: `.${componentNameSnakeCase}{
+
+				}
+				`,
+			})
+			stylesImport.push(`import style from  './${componentName}.module.less'`)
+		}
+
+		if(configuration.get('styleFiles.createCss')){
 			filesToCreate.push({
 				extension: ".css",
 				content: `.${componentNameSnakeCase}{
@@ -43,10 +68,22 @@ export interface ICreateComponentFolderDTO {
 				}
 				`,
 			})
+			stylesImport.push(`import './${componentName}.css'`)
+		}
+
+		if(configuration.get('styleFiles.createCssModule')){
+			filesToCreate.push({
+				extension: ".module.css",
+				content: `.${componentNameSnakeCase}{
+
+				}
+				`,
+			})
+			stylesImport.push(`import style from './${componentName}.module.css'`)
 		}
 
 
-		
+		let styles = stylesImport.join("\n")
 		const dialect = configuration.get("dialect")
 		
 		switch(dialect){
@@ -55,6 +92,7 @@ export interface ICreateComponentFolderDTO {
 					filesToCreate.push({
 						extension: ".tsx",
 						content: `import React from "react"
+						${styles}
 
 						export interface I${componentName}Props{
 
@@ -80,14 +118,42 @@ export interface ICreateComponentFolderDTO {
 				if(configuration.get('files.createStory')){
 					filesToCreate.push({
 						extension: ".stories.tsx",
-						content: "",
+						content:`
+							import React from 'react';
+							import ${componentName}, { I${componentName}Props } from '.';
+
+							export default {
+								title: 'Components/${componentName}',
+								component: ${componentName},
+							};
+
+
+							export const Plain = (args : I${componentName}Props) => {
+								return <${componentName} {...args}/>;
+							}
+
+							Plain.args = {
+							}
+						`,
 					})
 				}
 
 				if(configuration.get('files.createFormik')){
 					filesToCreate.push({
 						extension: ".formik.tsx",
-						content: "",
+						content: `import React from "react"
+						import { I${componentName}Props } from './${componentName}'
+
+						export interface I${componentName}FormikProps extends I${componentName}Props{
+
+						}
+
+						export default function ${componentName}(props : I${componentName}FormikProps){
+							return <div className='${componentNameSnakeCase}-formik'>
+							
+							</div>
+						}
+						`,
 					})
 				}
 
@@ -98,6 +164,7 @@ export interface ICreateComponentFolderDTO {
 					filesToCreate.push({
 						extension: ".js",
 						content: `import React from "react"
+						${styles}
 
 						export default function ${componentName}(props){
 							return <div className='${componentNameSnakeCase}'>
@@ -120,7 +187,23 @@ export interface ICreateComponentFolderDTO {
 				if(configuration.get('files.createStory')){
 					filesToCreate.push({
 						extension: ".stories.js",
-						content: "",
+						content:`
+							import React from 'react';
+							import ${componentName} from '.';
+
+							export default {
+								title: 'Components/${componentName}',
+								component: ${componentName},
+							};
+
+
+							export const Plain = args => {
+								return <${componentName} {...args}/>;
+							}
+
+							Plain.args = {
+							}
+						`
 					})
 				}
 
