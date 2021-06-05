@@ -1,6 +1,11 @@
 mode: Mainline
 next-version: 1.0.0
 branches:
+  master:
+    regex: (^master$|^origin\/master$|^main$|^origin\/main$)
+    mode: ContinuousDeployment
+    tag: ci
+    is-mainline: true
   feature:
     tag: beta
   pull-request:
