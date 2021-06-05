@@ -1,5 +1,5 @@
 #https://www.visualstudiogeeks.com/github/extensions/publish-vscode-extension-using-github-actions
-name: vsc-react-create-component
+name: Build And Deploy All
 
 on:
   push:
