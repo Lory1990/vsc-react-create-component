@@ -12,9 +12,6 @@ jobs:
     name: cicd
     runs-on: windows-latest
     steps:
-      - name: setEnvironment
-        run: |
-          echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV
 
       - name: checkout repo
         uses: actions/checkout@v2
@@ -76,7 +73,7 @@ jobs:
 
       - name: publish to marketplace
         if: github.ref == 'refs/heads/main'
-        run: npm run deploy ${{ env.PAT }}
+        run: npm run deploy ${{ secrets.PAT }}
 
       - name: create a release
         if: github.ref == 'refs/heads/main'
