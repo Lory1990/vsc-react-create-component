@@ -62,7 +62,9 @@ jobs:
           VERSION: "${{ steps.gitversion.outputs.semVer }}"
 
       - name: compile and create vsix
-        run: yarn package
+        run: |
+          yarn package
+          yarn vsce-package
 
       - name: print vsix path
         run: |
@@ -71,7 +73,7 @@ jobs:
       - name: upload vsix as artifact
         uses: actions/upload-artifact@v1
         with:
-          name: vsix-viewer-${{steps.gitversion.outputs.semVer}}.vsix
+          name: vsc-react-create-component-${{steps.gitversion.outputs.semVer}}.vsix
           path: ${{github.workspace}}/vsix-viewer-${{steps.gitversion.outputs.semVer}}.vsix
 
       - name: publish to marketplace
