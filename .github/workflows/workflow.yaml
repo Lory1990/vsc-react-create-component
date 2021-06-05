@@ -9,7 +9,7 @@ on:
       - '.vscode/**'
 
 jobs:
-  cicd:
+  build-and-deploy:
     name: cicd
     runs-on: windows-latest
     steps:

@@ -1,6 +1,10 @@
+#https://gist.github.com/Philo/4e396df9de6371fa82913433fa7b153d
 mode: Mainline
 next-version: 1.0.0
 branches:
+  release:
+    mode: ContinuousDelivery
+    tag: ''
   master:
     regex: (^master$|^origin\/master$|^main$|^origin\/main$)
     mode: ContinuousDeployment
