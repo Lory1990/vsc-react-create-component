@@ -2,7 +2,12 @@
 	"name": "vsc-react-create-component",
 	"displayName": "React Create Component Strucure",
 	"description": "Creates folder and files for a react component",
+	"publisher": "lory1990",
 	"version": "0.5.0",
+	"repository": {
+		"url": "https://github.com/Lory1990/vsc-react-create-component",
+		"type": "git"
+	},
 	"engines": {
 		"vscode": "^1.56.0"
 	},
@@ -102,7 +107,6 @@
 		"compile": "webpack",
 		"watch": "webpack --watch",
 		"package": "webpack --mode production --devtool hidden-source-map",
-		"vsce-package": "vsce package",
 		"deploy": "vsce publish -p",
 		"test-compile": "tsc -p ./",
 		"test-watch": "tsc -watch -p ./",
