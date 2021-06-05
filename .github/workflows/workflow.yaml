@@ -10,98 +10,67 @@ on:
 
 jobs:
   build-and-deploy:
-    name: cicd
+    name: Build and Deploy
     runs-on: windows-latest
     steps:
 
-      - name: checkout repo
+      - name: Checkout 🛎️
         uses: actions/checkout@v2
 
-      - name: fetch all history and tags from all branches for gitversion
+      - name: Cache Node Modules 💾
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: fetch all history and tags from all branches for gitversion 💻
         run: git fetch --prune --unshallow
 
-      - name: install gitversion tool
+      - name: Install gitversion tool 💻
         uses: gittools/actions/gitversion/setup@v0.9.9
         with:
             versionSpec: '5.1.x'
       
-      - name: execute gitversion
+      - name: Execute gitversion 💻
         id: gitversion # step id used as reference for output values
         uses: gittools/actions/gitversion/execute@v0.9.9
         
-      # - name: print gitversion
-      #   run: |
-      #     echo "Major: ${{ steps.gitversion.outputs.Major }}"
-      #     echo "Minor: ${{ steps.gitversion.outputs.Minor }}"
-      #     echo "Patch: ${{ steps.gitversion.outputs.Patch }}"
-      #     echo "PreReleaseTag: ${{ steps.gitversion.outputs.PreReleaseTag }}"
-      #     echo "PreReleaseTagWithDash: ${{ steps.gitversion.outputs.PreReleaseTagWithDash }}"
-      #     echo "PreReleaseLabel: ${{ steps.gitversion.outputs.PreReleaseLabel }}"
-      #     echo "PreReleaseNumber: ${{ steps.gitversion.outputs.PreReleaseNumber }}"
-      #     echo "WeightedPreReleaseNumber: ${{ steps.gitversion.outputs.WeightedPreReleaseNumber }}"
-      #     echo "BuildMetaData: ${{ steps.gitversion.outputs.BuildMetaData }}"
-      #     echo "BuildMetaDataPadded: ${{ steps.gitversion.outputs.BuildMetaDataPadded }}"
-      #     echo "FullBuildMetaData: ${{ steps.gitversion.outputs.FullBuildMetaData }}"
-      #     echo "MajorMinorPatch: ${{ steps.gitversion.outputs.MajorMinorPatch }}"
-      #     echo "SemVer: ${{ steps.gitversion.outputs.SemVer }}"
-      #     echo "LegacySemVer: ${{ steps.gitversion.outputs.LegacySemVer }}"
-      #     echo "LegacySemVerPadded: ${{ steps.gitversion.outputs.LegacySemVerPadded }}"
-      #     echo "AssemblySemVer: ${{ steps.gitversion.outputs.AssemblySemVer }}"
-      #     echo "AssemblySemFileVer: ${{ steps.gitversion.outputs.AssemblySemFileVer }}"
-      #     echo "FullSemVer: ${{ steps.gitversion.outputs.FullSemVer }}"
-      #     echo "InformationalVersion: ${{ steps.gitversion.outputs.InformationalVersion }}"
-      #     echo "BranchName: ${{ steps.gitversion.outputs.BranchName }}"
-      #     echo "Sha: ${{ steps.gitversion.outputs.Sha }}"
-      #     echo "ShortSha: ${{ steps.gitversion.outputs.ShortSha }}"
-      #     echo "NuGetVersionV2: ${{ steps.gitversion.outputs.NuGetVersionV2 }}"
-      #     echo "NuGetVersion: ${{ steps.gitversion.outputs.NuGetVersion }}"
-      #     echo "NuGetPreReleaseTagV2: ${{ steps.gitversion.outputs.NuGetPreReleaseTagV2 }}"
-      #     echo "NuGetPreReleaseTag: ${{ steps.gitversion.outputs.NuGetPreReleaseTag }}"
-      #     echo "VersionSourceSha: ${{ steps.gitversion.outputs.VersionSourceSha }}"
-      #     echo "CommitsSinceVersionSource: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}"
-      #     echo "CommitsSinceVersionSourcePadded: ${{ steps.gitversion.outputs.CommitsSinceVersionSourcePadded }}"
-      #     echo "CommitDate: ${{ steps.gitversion.outputs.CommitDate }}"
-
-      - name: setup node
+      - name: Setup node 📦 
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
 
-      - name: clean install dependencies
+      - name: Install dependencies 📦 
         run: yarn install
 
-      - name: update metadata in package.json
+      - name: Update metadata in package.json 📄 
         uses: onlyutkarsh/patch-files-action@v1.0.1
         with:
           files: '${{github.workspace}}/package.json'
           patch-syntax: |
             = /version => "${{ steps.gitversion.outputs.majorMinorPatch }}"
       
-      - name: add version in CHANGELOG.md
+      - name: Add version in CHANGELOG.md 📄 
         uses: cschleiden/replace-tokens@v1.0
         with:
           files: '${{github.workspace}}/CHANGELOG.md'
         env:
           VERSION: "${{ steps.gitversion.outputs.majorMinorPatch }}"
 
-      - name: compile and create vsix
+      - name: compile and create vsix ⚙️
         run: yarn vsce package
 
-      - name: print vsix path
-        run: |
-          echo "Component path: ${{ env.vsix_path }}"
-
-      - name: upload vsix as artifact
+      - name: Upload vsix as artifact 🚀
         uses: actions/upload-artifact@v1
         with:
           name: vsc-react-create-component-${{steps.gitversion.outputs.majorMinorPatch}}.vsix
           path: ${{github.workspace}}/vsc-react-create-component-${{steps.gitversion.outputs.majorMinorPatch}}.vsix
 
-      - name: publish to marketplace
+      - name: Publish to marketplace 🚀
         if: github.ref == 'refs/heads/main'
         run: npm run deploy ${{ secrets.PAT }}
 
-      - name: create a release
+      - name: Create a release 🚀
         if: github.ref == 'refs/heads/main'
         uses: actions/create-release@v1
         env:
