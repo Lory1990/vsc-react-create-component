@@ -30,11 +30,36 @@ jobs:
         
       - name: print gitversion
         run: |
-          echo "Major: ${{ steps.gitversion.outputs.major }}"
-          echo "Minor: ${{ steps.gitversion.outputs.minor }}"
-          echo "Patch: ${{ steps.gitversion.outputs.patch }}"
-          echo "MajorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}"
-          echo "SemVer: ${{ steps.gitversion.outputs.semVer }}"
+          echo "Major: ${{ steps.gitversion.outputs.Major }}"
+          echo "Minor: ${{ steps.gitversion.outputs.Minor }}"
+          echo "Patch: ${{ steps.gitversion.outputs.Patch }}"
+          echo "PreReleaseTag: ${{ steps.gitversion.outputs.PreReleaseTag }}"
+          echo "PreReleaseTagWithDash: ${{ steps.gitversion.outputs.PreReleaseTagWithDash }}"
+          echo "PreReleaseLabel: ${{ steps.gitversion.outputs.PreReleaseLabel }}"
+          echo "PreReleaseNumber: ${{ steps.gitversion.outputs.PreReleaseNumber }}"
+          echo "WeightedPreReleaseNumber: ${{ steps.gitversion.outputs.WeightedPreReleaseNumber }}"
+          echo "BuildMetaData: ${{ steps.gitversion.outputs.BuildMetaData }}"
+          echo "BuildMetaDataPadded: ${{ steps.gitversion.outputs.BuildMetaDataPadded }}"
+          echo "FullBuildMetaData: ${{ steps.gitversion.outputs.FullBuildMetaData }}"
+          echo "MajorMinorPatch: ${{ steps.gitversion.outputs.MajorMinorPatch }}"
+          echo "SemVer: ${{ steps.gitversion.outputs.SemVer }}"
+          echo "LegacySemVer: ${{ steps.gitversion.outputs.LegacySemVer }}"
+          echo "LegacySemVerPadded: ${{ steps.gitversion.outputs.LegacySemVerPadded }}"
+          echo "AssemblySemVer: ${{ steps.gitversion.outputs.AssemblySemVer }}"
+          echo "AssemblySemFileVer: ${{ steps.gitversion.outputs.AssemblySemFileVer }}"
+          echo "FullSemVer: ${{ steps.gitversion.outputs.FullSemVer }}"
+          echo "InformationalVersion: ${{ steps.gitversion.outputs.InformationalVersion }}"
+          echo "BranchName: ${{ steps.gitversion.outputs.BranchName }}"
+          echo "Sha: ${{ steps.gitversion.outputs.Sha }}"
+          echo "ShortSha: ${{ steps.gitversion.outputs.ShortSha }}"
+          echo "NuGetVersionV2: ${{ steps.gitversion.outputs.NuGetVersionV2 }}"
+          echo "NuGetVersion: ${{ steps.gitversion.outputs.NuGetVersion }}"
+          echo "NuGetPreReleaseTagV2: ${{ steps.gitversion.outputs.NuGetPreReleaseTagV2 }}"
+          echo "NuGetPreReleaseTag: ${{ steps.gitversion.outputs.NuGetPreReleaseTag }}"
+          echo "VersionSourceSha: ${{ steps.gitversion.outputs.VersionSourceSha }}"
+          echo "CommitsSinceVersionSource: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}"
+          echo "CommitsSinceVersionSourcePadded: ${{ steps.gitversion.outputs.CommitsSinceVersionSourcePadded }}"
+          echo "CommitDate: ${{ steps.gitversion.outputs.CommitDate }}"
 
       - name: setup node
         uses: actions/setup-node@v1
@@ -49,14 +74,14 @@ jobs:
         with:
           files: '${{github.workspace}}/package.json'
           patch-syntax: |
-            = /version => "${{ steps.gitversion.outputs.semVer }}"
+            = /version => "${{ steps.gitversion.outputs.majorMinorPatch }}"
       
       - name: add version in CHANGELOG.md
         uses: cschleiden/replace-tokens@v1.0
         with:
           files: '${{github.workspace}}/CHANGELOG.md'
         env:
-          VERSION: "${{ steps.gitversion.outputs.semVer }}"
+          VERSION: "${{ steps.gitversion.outputs.majorMinorPatch }}"
 
       - name: compile and create vsix
         run: yarn vsce package
@@ -68,8 +93,8 @@ jobs:
       - name: upload vsix as artifact
         uses: actions/upload-artifact@v1
         with:
-          name: vsc-react-create-component-${{steps.gitversion.outputs.semVer}}.vsix
-          path: ${{github.workspace}}/vsc-react-create-component-${{steps.gitversion.outputs.semVer}}.vsix
+          name: vsc-react-create-component-${{steps.gitversion.outputs.majorMinorPatch}}.vsix
+          path: ${{github.workspace}}/vsc-react-create-component-${{steps.gitversion.outputs.majorMinorPatch}}.vsix
 
       - name: publish to marketplace
         if: github.ref == 'refs/heads/main'
